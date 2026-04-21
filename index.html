@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Solidarity Diagnostic · Love and Justice LLC</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Serif+4:wght@300;400;600&display=swap');
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --dark:#3B2A1A;--mid:#8B5E3C;--tan:#C4956A;--pale:#EDE0D0;--cream:#F5EBD9;--bg:#FAF6F0;--text:#2C1A0E;--muted:#6B4C35; }
+body { font-family:'Source Serif 4',serif; background:var(--bg); color:var(--text); min-height:100vh; }
+.hero { background:var(--dark); padding:3rem 2rem 2.5rem; text-align:center; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; top:-60px; right:-60px; width:260px; height:260px; border-radius:50%; background:var(--mid); opacity:0.12; }
+.hero-eyebrow { font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--tan); margin-bottom:0.75rem; font-weight:600; }
+.hero-title { font-family:'Playfair Display',serif; font-size:clamp(2rem,5vw,3rem); color:var(--cream); line-height:1.15; margin-bottom:1rem; }
+.hero-title em { color:var(--tan); font-style:italic; }
+.hero-sub { font-size:1rem; color:#C9B89E; max-width:560px; margin:0 auto 1.5rem; line-height:1.7; font-weight:300; }
+.hero-note { font-size:0.85rem; color:var(--tan); font-style:italic; max-width:520px; margin:0 auto; line-height:1.6; padding:0.75rem 1rem; border:0.5px solid rgba(196,149,106,0.3); border-radius:8px; }
+.container { max-width:680px; margin:0 auto; padding:2rem 1.25rem 4rem; }
+.how-to { background:white; border:0.5px solid var(--pale); border-radius:12px; padding:1.25rem 1.5rem; margin-bottom:2rem; }
+.how-to-title { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; color:var(--dark); margin-bottom:0.75rem; }
+.how-to-steps { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+.how-step { background:var(--bg); border-radius:8px; padding:0.75rem; text-align:center; }
+.how-step-num { font-size:18px; font-weight:700; color:var(--tan); font-family:'Playfair Display',serif; margin-bottom:4px; }
+.how-step-text { font-size:0.75rem; color:var(--muted); line-height:1.5; }
+.dim-guide { background:var(--pale); border-radius:10px; padding:1rem 1.25rem; margin-bottom:1.5rem; }
+.dim-guide-title { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mid); font-weight:600; margin-bottom:0.75rem; }
+.dim-rows { display:grid; gap:10px; }
+.dim-row-item { display:grid; grid-template-columns:150px 1fr; gap:8px; align-items:start; }
+.dim-row-name { font-family:'Playfair Display',serif; font-size:0.85rem; font-weight:700; color:var(--dark); }
+.dim-row-desc { font-size:0.78rem; color:var(--muted); line-height:1.5; }
+.dim-note { font-size:0.78rem; color:var(--mid); font-style:italic; margin-top:0.75rem; line-height:1.6; border-top:0.5px solid #D4B896; padding-top:0.75rem; }
+.round-header { display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:0.5px solid var(--pale); }
+.round-num { width:40px; height:40px; border-radius:50%; background:var(--mid); color:white; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; flex-shrink:0; }
+.round-title { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; color:var(--dark); }
+.round-subtitle { font-size:0.85rem; color:var(--muted); font-style:italic; }
+.select-label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mid); font-weight:600; margin-bottom:0.5rem; display:block; }
+.pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1.25rem; }
+.pill { padding:5px 12px; border-radius:20px; font-size:0.8rem; border:0.5px solid var(--pale); background:white; color:var(--muted); cursor:pointer; transition:all 0.15s; font-family:'Source Serif 4',serif; }
+.pill:hover { border-color:var(--tan); color:var(--dark); }
+.pill.selected { background:var(--tan); border-color:var(--tan); color:var(--dark); font-weight:600; }
+.dim-section { margin-bottom:1.25rem; }
+.dim-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:3px; }
+.dim-name { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; color:var(--dark); }
+.dim-question { font-size:0.78rem; color:var(--muted); font-style:italic; margin-bottom:8px; }
+.bar-track { height:12px; background:var(--pale); border-radius:6px; overflow:hidden; margin-bottom:6px; }
+.bar-fill { height:100%; border-radius:6px; transition:width 0.3s ease,background 0.3s ease; }
+.slider { width:100%; accent-color:var(--mid); cursor:pointer; }
+.scale-row { display:flex; justify-content:space-between; font-size:9px; color:var(--tan); margin-top:2px; }
+.divider { height:0.5px; background:var(--pale); margin:1.5rem 0; }
+.result-card { background:white; border:0.5px solid var(--pale); border-radius:12px; padding:1.5rem; margin-bottom:1.25rem; display:none; }
+.result-label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--tan); font-weight:600; margin-bottom:0.4rem; }
+.result-who { font-size:0.82rem; color:var(--muted); font-style:italic; margin-bottom:0.75rem; }
+.result-stage { font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--mid); font-weight:600; margin-bottom:0.25rem; }
+.result-type { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--dark); margin-bottom:0.5rem; }
+.result-present { font-size:0.88rem; color:var(--muted); line-height:1.7; margin-bottom:0.5rem; }
+.result-needed { font-size:0.88rem; color:var(--dark); line-height:1.7; margin-bottom:1rem; }
+.result-reflection { background:var(--pale); border-left:3px solid var(--tan); padding:0.75rem 1rem; font-size:0.85rem; color:var(--dark); font-style:italic; line-height:1.6; border-radius:0 6px 6px 0; }
+.reflection-label { font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--tan); font-weight:600; margin-bottom:4px; }
+.comparison-card { background:var(--dark); border-radius:12px; padding:1.5rem; margin-bottom:1.5rem; }
+.comparison-eyebrow { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mid); font-weight:600; margin-bottom:0.5rem; }
+.comparison-title { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:var(--cream); margin-bottom:0.75rem; }
+.comparison-how { font-size:0.82rem; color:#C9B89E; line-height:1.7; margin-bottom:1rem; padding:0.75rem 1rem; background:rgba(255,255,255,0.06); border-radius:8px; }
+.comparison-insight { font-size:0.88rem; color:#C9B89E; line-height:1.7; font-style:italic; margin-bottom:1.25rem; }
+.comparison-bars { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:1rem; }
+.comp-col-label { font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--tan); margin-bottom:0.6rem; font-weight:600; }
+.comp-bar-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.comp-bar-label { font-size:9px; color:#C9B89E; min-width:52px; }
+.comp-bar-track { flex:1; height:8px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden; }
+.comp-bar-fill { height:100%; border-radius:4px; transition:width 0.4s ease; }
+.humility-note { background:rgba(196,149,106,0.15); border:0.5px solid rgba(196,149,106,0.3); border-radius:8px; padding:1rem; font-size:0.85rem; color:var(--cream); line-height:1.7; font-style:italic; }
+.next-steps { background:white; border:0.5px solid var(--pale); border-radius:12px; padding:1.25rem 1.5rem; margin-bottom:1.5rem; }
+.next-steps-title { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; color:var(--dark); margin-bottom:0.75rem; }
+.practice { display:flex; gap:10px; margin-bottom:0.75rem; align-items:flex-start; }
+.practice-dot { width:8px; height:8px; border-radius:50%; background:var(--tan); flex-shrink:0; margin-top:6px; }
+.practice-text { font-size:0.85rem; color:var(--muted); line-height:1.6; }
+.cta-section { background:var(--dark); border-radius:12px; padding:1.75rem 1.5rem; text-align:center; margin-top:2rem; }
+.cta-label { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--mid); margin-bottom:0.5rem; font-weight:600; }
+.cta-title { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--cream); margin-bottom:0.5rem; }
+.cta-body { font-size:0.85rem; color:#C9B89E; line-height:1.7; margin-bottom:1.25rem; font-weight:300; }
+.btn-primary { display:block; background:var(--tan); color:var(--dark); padding:12px 24px; border-radius:8px; font-size:0.9rem; font-weight:600; text-decoration:none; font-family:'Source Serif 4',serif; cursor:pointer; border:none; margin-bottom:10px; width:100%; transition:background 0.2s; }
+.btn-primary:hover { background:#D4A578; }
+.btn-secondary { display:block; background:transparent; color:var(--tan); padding:12px 24px; border-radius:8px; font-size:0.9rem; font-weight:600; text-decoration:none; font-family:'Source Serif 4',serif; cursor:pointer; border:1px solid rgba(196,149,106,0.4); width:100%; transition:background 0.2s; }
+.btn-secondary:hover { background:rgba(196,149,106,0.1); }
+.disclaimer { background:white; border:0.5px solid var(--pale); border-radius:10px; padding:1rem 1.25rem; margin-top:1.5rem; }
+.disclaimer-title { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--mid); font-weight:600; margin-bottom:0.5rem; }
+.disclaimer-text { font-size:0.75rem; color:var(--muted); line-height:1.7; }
+.brand { text-align:center; font-size:9px; color:var(--tan); letter-spacing:0.1em; margin-top:1.5rem; }
+.section { margin-bottom:2.5rem; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p class="hero-eyebrow">Love and Justice LLC · Dr. Durryle Brooks</p>
+  <h1 class="hero-title">The Solidarity<br><em>Diagnostic</em></h1>
+  <p class="hero-sub">Solidarity is not static. It takes shape within relational dynamics — and the same person can be someone's deepest ally on one issue and purely surface-level on another.</p>
+  <p class="hero-note">This tool is not a verdict. It is a map. Score yourself honestly on two different relationships and see what the comparison reveals about where you are — and where you can grow.</p>
+</div>
+
+<div class="container">
+
+  <div class="how-to">
+    <p class="how-to-title">How to use this tool</p>
+    <div class="how-to-steps">
+      <div class="how-step"><div class="how-step-num">1</div><div class="how-step-text">Choose who you are in solidarity with and around what issue</div></div>
+      <div class="how-step"><div class="how-step-num">2</div><div class="how-step-text">Score yourself honestly on the three dimensions — no right answers, only true ones</div></div>
+      <div class="how-step"><div class="how-step-num">3</div><div class="how-step-text">Do it twice and read what the comparison reveals about where you are and where you can grow</div></div>
+    </div>
+  </div>
+
+  <div class="dim-guide">
+    <p class="dim-guide-title">The three dimensions — what you are scoring</p>
+    <div class="dim-rows">
+      <div class="dim-row-item">
+        <span class="dim-row-name">Time</span>
+        <span class="dim-row-desc">How long have you been in relationship with this group or cause — not just aware of it, but genuinely in relationship? Solidarity built before a crisis or ask is thicker than solidarity formed in response to one.</span>
+      </div>
+      <div class="dim-row-item">
+        <span class="dim-row-name">Quality of Connection</span>
+        <span class="dim-row-desc">How deeply do you know both the issues AND the people living that reality — their histories, their lives, their full humanity? Real friendships, not just cause alignment. The goal is seeing the whole person, not only their struggle.</span>
+      </div>
+      <div class="dim-row-item">
+        <span class="dim-row-name">Shared Risk</span>
+        <span class="dim-row-desc">Are both parties genuinely putting something on the line — time, reputation, resources, comfort, or power? Deep quality of connection makes shared risk more likely and more natural. Shallow connection tends to keep risk low even when time is long.</span>
+      </div>
+    </div>
+    <p class="dim-note">These three dimensions interact. You can have a long relationship with shallow connection and risk will stay low. But when you deeply know people's lives and they know yours, the risk becomes naturally shared — because you can no longer unsee each other's humanity.</p>
+  </div>
+
+  <div class="section">
+    <div class="round-header">
+      <div class="round-num">1</div>
+      <div>
+        <div class="round-title">A relationship where you feel deep</div>
+        <div class="round-subtitle">Think of a community or cause where you have real history and connection</div>
+      </div>
+    </div>
+
+    <label class="select-label">Who are you in solidarity with?</label>
+    <div class="pills" id="r1-who-pills">
+      <span class="pill" onclick="selectPill('r1-who',this,'Black communities')">Black communities</span>
+      <span class="pill" onclick="selectPill('r1-who',this,'Latino/a/x communities')">Latino/a/x communities</span>
+      <span class="pill" onclick="selectPill('r1-who',this,'Indigenous communities')">Indigenous communities</span>
+      <span class="pill" onclick="selectPill('r1-who',this,'LGBTQ+ communities')">LGBTQ+ communities</span>
+      <span class="pill" onclick="selectPill('r1-who',this,'Immigrant communities')">Immigrant communities</span>
+      <span class="pill" onclick="selectPill('r1-who',this,'Working class communities')">Working class communities</span>
+      <span class="pill" onclick="selectPill('r1-who',this,'Palestinian communities')">Palestinian communities</span>
+      <span class="pill" onclick="selectPill('r1-who',this,'Disabled communities')">Disabled communities</span>
+      <span class="pill" onclick="selectPill('r1-who',this,'Another community')">Other</span>
+    </div>
+
+    <label class="select-label">Around what issue or cause?</label>
+    <div class="pills" id="r1-issue-pills">
+      <span class="pill" onclick="selectPill('r1-issue',this,'racial justice')">Racial justice</span>
+      <span class="pill" onclick="selectPill('r1-issue',this,'housing justice')">Housing justice</span>
+      <span class="pill" onclick="selectPill('r1-issue',this,'economic justice')">Economic justice</span>
+      <span class="pill" onclick="selectPill('r1-issue',this,'education equity')">Education equity</span>
+      <span class="pill" onclick="selectPill('r1-issue',this,'climate justice')">Climate justice</span>
+      <span class="pill" onclick="selectPill('r1-issue',this,'police accountability')">Police accountability</span>
+      <span class="pill" onclick="selectPill('r1-issue',this,'immigration rights')">Immigration rights</span>
+      <span class="pill" onclick="selectPill('r1-issue',this,'trans rights')">Trans rights</span>
+      <span class="pill" onclick="selectPill('r1-issue',this,'land rights')">Land rights</span>
+      <span class="pill" onclick="selectPill('r1-issue',this,'another issue')">Other</span>
+    </div>
+
+    <div class="dim-section">
+      <div class="dim-header"><span class="dim-name">Time</span><span style="font-size:1rem;font-weight:600;color:var(--tan)" id="r1-tv">3</span></div>
+      <p class="dim-question">How long have you been in genuine relationship with this group or cause?</p>
+      <div class="bar-track"><div class="bar-fill" id="r1-tb" style="width:60%;background:#C49A6C"></div></div>
+      <input type="range" class="slider" min="1" max="5" step="1" value="3" id="r1-ts" oninput="update('r1')">
+      <div class="scale-row"><span>1 · brand new</span><span>2 · months</span><span>3 · a year+</span><span>4 · several years</span><span>5 · long term</span></div>
+    </div>
+
+    <div class="dim-section">
+      <div class="dim-header"><span class="dim-name">Quality of Connection</span><span style="font-size:1rem;font-weight:600;color:var(--tan)" id="r1-qv">3</span></div>
+      <p class="dim-question">How deeply do you know both the issues and the people living this reality — their lives, histories, and full humanity?</p>
+      <div class="bar-track"><div class="bar-fill" id="r1-qb" style="width:60%;background:#C49A6C"></div></div>
+      <input type="range" class="slider" min="1" max="5" step="1" value="3" id="r1-qs" oninput="update('r1')">
+      <div class="scale-row"><span>1 · aware of the cause</span><span>2 · some knowing</span><span>3 · growing</span><span>4 · trusted</span><span>5 · deep knowing</span></div>
+    </div>
+
+    <div class="dim-section">
+      <div class="dim-header"><span class="dim-name">Shared Risk</span><span style="font-size:1rem;font-weight:600;color:var(--tan)" id="r1-rv">3</span></div>
+      <p class="dim-question">Are both parties genuinely putting something on the line together?</p>
+      <div class="bar-track"><div class="bar-fill" id="r1-rb" style="width:60%;background:#C49A6C"></div></div>
+      <input type="range" class="slider" min="1" max="5" step="1" value="3" id="r1-rs" oninput="update('r1')">
+      <div class="scale-row"><span>1 · no risk taken</span><span>2 · minimal</span><span>3 · some risk</span><span>4 · meaningful</span><span>5 · high shared risk</span></div>
+    </div>
+
+    <div class="result-card" id="r1-result">
+      <p class="result-label">Round 1 · Your solidarity here</p>
+      <p class="result-who" id="r1-who-display"></p>
+      <p class="result-stage" id="r1-stage"></p>
+      <p class="result-type" id="r1-type"></p>
+      <p class="result-present" id="r1-present"></p>
+      <p class="result-needed" id="r1-needed"></p>
+      <div class="result-reflection"><p class="reflection-label">Growth question</p><p id="r1-ref"></p></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="round-header">
+      <div class="round-num" style="background:#5A3015">2</div>
+      <div>
+        <div class="round-title">A relationship where you show up — but are newer</div>
+        <div class="round-subtitle">Think of a cause you care about but have less history with</div>
+      </div>
+    </div>
+
+    <label class="select-label">Who are you in solidarity with?</label>
+    <div class="pills" id="r2-who-pills">
+      <span class="pill" onclick="selectPill('r2-who',this,'Black communities')">Black communities</span>
+      <span class="pill" onclick="selectPill('r2-who',this,'Latino/a/x communities')">Latino/a/x communities</span>
+      <span class="pill" onclick="selectPill('r2-who',this,'Indigenous communities')">Indigenous communities</span>
+      <span class="pill" onclick="selectPill('r2-who',this,'LGBTQ+ communities')">LGBTQ+ communities</span>
+      <span class="pill" onclick="selectPill('r2-who',this,'Immigrant communities')">Immigrant communities</span>
+      <span class="pill" onclick="selectPill('r2-who',this,'Working class communities')">Working class communities</span>
+      <span class="pill" onclick="selectPill('r2-who',this,'Palestinian communities')">Palestinian communities</span>
+      <span class="pill" onclick="selectPill('r2-who',this,'Disabled communities')">Disabled communities</span>
+      <span class="pill" onclick="selectPill('r2-who',this,'Another community')">Other</span>
+    </div>
+
+    <label class="select-label">Around what issue or cause?</label>
+    <div class="pills" id="r2-issue-pills">
+      <span class="pill" onclick="selectPill('r2-issue',this,'racial justice')">Racial justice</span>
+      <span class="pill" onclick="selectPill('r2-issue',this,'housing justice')">Housing justice</span>
+      <span class="pill" onclick="selectPill('r2-issue',this,'economic justice')">Economic justice</span>
+      <span class="pill" onclick="selectPill('r2-issue',this,'education equity')">Education equity</span>
+      <span class="pill" onclick="selectPill('r2-issue',this,'climate justice')">Climate justice</span>
+      <span class="pill" onclick="selectPill('r2-issue',this,'police accountability')">Police accountability</span>
+      <span class="pill" onclick="selectPill('r2-issue',this,'immigration rights')">Immigration rights</span>
+      <span class="pill" onclick="selectPill('r2-issue',this,'trans rights')">Trans rights</span>
+      <span class="pill" onclick="selectPill('r2-issue',this,'land rights')">Land rights</span>
+      <span class="pill" onclick="selectPill('r2-issue',this,'another issue')">Other</span>
+    </div>
+
+    <div class="dim-section">
+      <div class="dim-header"><span class="dim-name">Time</span><span style="font-size:1rem;font-weight:600;color:var(--tan)" id="r2-tv">2</span></div>
+      <p class="dim-question">How long have you been in genuine relationship with this group or cause?</p>
+      <div class="bar-track"><div class="bar-fill" id="r2-tb" style="width:40%;background:#C4956A"></div></div>
+      <input type="range" class="slider" min="1" max="5" step="1" value="2" id="r2-ts" oninput="update('r2')">
+      <div class="scale-row"><span>1 · brand new</span><span>2 · months</span><span>3 · a year+</span><span>4 · several years</span><span>5 · long term</span></div>
+    </div>
+
+    <div class="dim-section">
+      <div class="dim-header"><span class="dim-name">Quality of Connection</span><span style="font-size:1rem;font-weight:600;color:var(--tan)" id="r2-qv">2</span></div>
+      <p class="dim-question">How deeply do you know both the issues and the people living this reality — their lives, histories, and full humanity?</p>
+      <div class="bar-track"><div class="bar-fill" id="r2-qb" style="width:40%;background:#C4956A"></div></div>
+      <input type="range" class="slider" min="1" max="5" step="1" value="2" id="r2-qs" oninput="update('r2')">
+      <div class="scale-row"><span>1 · aware of the cause</span><span>2 · some knowing</span><span>3 · growing</span><span>4 · trusted</span><span>5 · deep knowing</span></div>
+    </div>
+
+    <div class="dim-section">
+      <div class="dim-header"><span class="dim-name">Shared Risk</span><span style="font-size:1rem;font-weight:600;color:var(--tan)" id="r2-rv">2</span></div>
+      <p class="dim-question">Are both parties genuinely putting something on the line together?</p>
+      <div class="bar-track"><div class="bar-fill" id="r2-rb" style="width:40%;background:#C4956A"></div></div>
+      <input type="range" class="slider" min="1" max="5" step="1" value="2" id="r2-rs" oninput="update('r2')">
+      <div class="scale-row"><span>1 · no risk taken</span><span>2 · minimal</span><span>3 · some risk</span><span>4 · meaningful</span><span>5 · high shared risk</span></div>
+    </div>
+
+    <div class="result-card" id="r2-result">
+      <p class="result-label">Round 2 · Your solidarity here</p>
+      <p class="result-who" id="r2-who-display"></p>
+      <p class="result-stage" id="r2-stage"></p>
+      <p class="result-type" id="r2-type"></p>
+      <p class="result-present" id="r2-present"></p>
+      <p class="result-needed" id="r2-needed"></p>
+      <div class="result-reflection"><p class="reflection-label">Growth question</p><p id="r2-ref"></p></div>
+    </div>
+  </div>
+
+  <div class="comparison-card" id="comparison">
+    <p class="comparison-eyebrow">What the comparison reveals</p>
+    <p class="comparison-title">You are not one type of solidarity practitioner. You are many.</p>
+    <div class="comparison-how">
+      <strong style="color:var(--cream)">How to read this:</strong> The bars show your three dimension scores side by side for each relationship. Fuller and darker bars mean thicker solidarity. Look for gaps — between relationships, and between dimensions within the same relationship. The gaps are not failures. They are your growing edge. And remember: the conditions you are working within matter. Organizational culture, power dynamics, and available resources all shape what is possible. Name those conditions alongside your scores.
+    </div>
+    <p class="comparison-insight" id="comp-insight"></p>
+    <div class="comparison-bars">
+      <div>
+        <p class="comp-col-label" id="comp-label-1">Relationship 1</p>
+        <div class="comp-bar-row"><span class="comp-bar-label">Time</span><div class="comp-bar-track"><div class="comp-bar-fill" id="cb-r1-t" style="background:var(--tan)"></div></div></div>
+        <div class="comp-bar-row"><span class="comp-bar-label">Connection</span><div class="comp-bar-track"><div class="comp-bar-fill" id="cb-r1-q" style="background:var(--tan)"></div></div></div>
+        <div class="comp-bar-row"><span class="comp-bar-label">Risk</span><div class="comp-bar-track"><div class="comp-bar-fill" id="cb-r1-r" style="background:var(--tan)"></div></div></div>
+      </div>
+      <div>
+        <p class="comp-col-label" id="comp-label-2">Relationship 2</p>
+        <div class="comp-bar-row"><span class="comp-bar-label">Time</span><div class="comp-bar-track"><div class="comp-bar-fill" id="cb-r2-t" style="background:#C4956A88"></div></div></div>
+        <div class="comp-bar-row"><span class="comp-bar-label">Connection</span><div class="comp-bar-track"><div class="comp-bar-fill" id="cb-r2-q" style="background:#C4956A88"></div></div></div>
+        <div class="comp-bar-row"><span class="comp-bar-label">Risk</span><div class="comp-bar-track"><div class="comp-bar-fill" id="cb-r2-r" style="background:#C4956A88"></div></div></div>
+      </div>
+    </div>
+    <div class="humility-note">Solidarity is not a destination. It is a practice. The question is not who you are — it is who you are becoming, and what relationships and risks you are willing to let change you.</div>
+  </div>
+
+  <div class="next-steps" id="next-steps-card">
+    <p class="next-steps-title">Practices for deepening — wherever you are</p>
+    <div id="practices-list"></div>
+  </div>
+
+  <div class="cta-section">
+    <p class="cta-label">Go deeper</p>
+    <p class="cta-title">Get the free framework guide.</p>
+    <p class="cta-body">Download the full Seven Types of Solidarity guide — definitions, indicators, risks, and reflection questions for all seven types. Use it to start an honest conversation with your team, coalition, or organization.</p>
+    <a href="https://lp.constantcontactpages.com/sl/yliyWSX" class="btn-primary">Download the Free Guide</a>
+    <a href="https://linktr.ee/durryleb" class="btn-secondary">Book a Workshop or Keynote</a>
+  </div>
+
+  <div class="disclaimer">
+    <p class="disclaimer-title">Educational Use & Intellectual Property Notice</p>
+    <p class="disclaimer-text">The Solidarity Diagnostic is an educational tool developed for personal reflection, learning, and organizational dialogue. It is not a clinical, psychological, or professional assessment instrument and should not be used as one. Results are intended to support growth conversations — not to evaluate, judge, or categorize individuals or groups.<br><br>The Solidarity Spectrum framework — including the Seven Types of Solidarity, the three dimensions of time, quality of connection, and shared risk, and all associated language, concepts, and materials — is the original intellectual property of Dr. Durryle Brooks and Love and Justice LLC. © 2026 Dr. Durryle Brooks. All rights reserved. This tool may be used for personal and educational purposes. Reproduction, adaptation, facilitation, or commercial use of any kind requires written permission from Love and Justice LLC. To inquire about licensing, facilitation rights, or bringing this framework to your organization, visit linktr.ee/durryleb or book a consultation at calendly.com/loveandjustice/new-meeting.</p>
+  </div>
+
+  <p class="brand">© 2026 Dr. Durryle Brooks · Love and Justice LLC · @loveandjusticellc · Baltimore, Maryland</p>
+</div>
+
+<script>
+const stages=[
+  {max:5,stage:"Stage 1",name:"Early Stage Solidarity",present:"You are showing up — and that is the starting point. This stage is marked by visibility without deep relational investment. The dimensions of time, connection, and shared risk are all still forming, and that is okay. Everyone begins here.",needed:"The most important next step is relationship — not more statements or actions, but presence. Find the people already doing this work and introduce yourself without an agenda. Listen before you act.",ref:"Who are the local leaders and people most affected by this issue that you have not yet met? What would it look like to show up to their space before you need anything from them?"},
+  {max:7,stage:"Stage 2",name:"Beginning Solidarity",present:"Something real is starting to form. You have some investment here — time, growing awareness, or a willingness to take risk. The foundation is still thin but it exists, and that matters.",needed:"Look at which of the three dimensions is lowest and focus there intentionally. If time is low — stay longer. If connection is low — listen more than you speak and learn people's names and lives. If risk is low — ask yourself honestly what it would cost you to go further.",ref:"Which of the three dimensions — time, quality of connection, or shared risk — is lowest right now? What is one concrete thing you could do this month to strengthen it?"},
+  {max:9,stage:"Stage 3",name:"Conditional Solidarity",present:"There is real investment here and you are showing up with consistency. And yet — unexamined conditions may be quietly shaping how far you will go. The ceiling is often invisible until you hit it.",needed:"This stage calls for honest self-examination. Surface the conditions. What assumptions, comfort levels, or unspoken limits are governing your solidarity? You cannot move beyond what you have not named.",ref:"What are the unspoken if/then rules operating beneath your solidarity in this relationship? What would it take to name them honestly — and then decide whether you are willing to move beyond them?"},
+  {max:11,stage:"Stage 4",name:"Transactional Solidarity",present:"This relationship has strategic alignment and real history. That is meaningful. You are showing up and there is genuine mutuality in some areas. The question now is whether this is a foundation you intend to build on — or whether the alignment dissolves when interests diverge.",needed:"Invest in the relationship beyond the issue. Learn each other's histories. Show up when there is no campaign, no crisis, and no ask. The movement from transactional to reciprocal happens in those in-between moments.",ref:"What do you know about this community or these people beyond the cause you share? What would it look like to invest in the relationship when there is nothing immediate to gain?"},
+  {max:13,stage:"Stage 5",name:"Reciprocal Solidarity",present:"This relationship has real depth. Time, quality of connection, and shared risk are all meaningfully present. Emotional labor flows in both directions. This is where solidarity begins to feel like love in practice — not as sentiment, but as committed mutual action.",needed:"Attend to the mutuality. Reciprocal solidarity can quietly become one-sided if the emotional labor is not acknowledged and redistributed. Check in regularly. Name what each party is carrying and what genuine support looks like.",ref:"Where in this relationship is solidarity still flowing more in one direction than the other? What would genuine mutuality look like — and what would you need to offer or ask for to get there?"},
+  {max:15,stage:"Stage 6 and 7",name:"Intersectional and Transformative Solidarity",present:"All three dimensions are strong and sustained. You are in the deep work — holding multiple truths simultaneously, taking real risk, and showing up over time without conditions. This is the thickest form of solidarity.",needed:"Orient always toward liberation. Ask whether this solidarity is moving everyone toward wholeness and freedom with dignity intact. Remember: transformation without liberation can still cause harm. Keep asking the hardest question.",ref:"What would it look like for all of us in this relationship to be free — structurally and relationally? How are you building that together, and who is still being asked to wait?"}
+];
+
+const practiceMap={
+  low:["Attend a community event, meeting, or gathering as a listener — not a speaker or helper. Show up with no agenda except to learn.","Follow and read the work of local leaders already doing this work for 30 days before you say or do anything publicly.","Reach out to one person in this community and ask: what do you most need people like me to understand right now?"],
+  mid:["Have one honest conversation about what your solidarity has cost you so far — and what you are willing for it to cost going forward.","Ask the people you are in solidarity with how they experience your support. Create real space for honest feedback without defending yourself.","Identify one place where your conditions or comfort level are limiting your solidarity and make a conscious decision about it."],
+  high:["Facilitate a conversation in your own community or organization about this issue — take the risk of bringing it into spaces where it is not welcome.","Document and share what you are learning publicly so others in your community can grow alongside you.","Keep asking the orientation question: is this solidarity moving everyone toward liberation and wholeness — with no one sacrificed along the way?"]
+};
+
+function getStage(t){return stages.find(s=>t<=s.max)||stages[stages.length-1];}
+function barColor(s){return['#EDE0D0','#D8C4A4','#C49A6C','#8B5E3C','#3B2A1A'][s-1];}
+const sel={'r1-who':'','r1-issue':'','r2-who':'','r2-issue':''};
+
+function selectPill(key,el,val){
+  el.closest('.pills').querySelectorAll('.pill').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected');
+  sel[key]=val;
+  update(key.split('-')[0]);
+}
+
+function update(round){
+  const t=+document.getElementById(`${round}-ts`).value;
+  const q=+document.getElementById(`${round}-qs`).value;
+  const r=+document.getElementById(`${round}-rs`).value;
+  document.getElementById(`${round}-tv`).textContent=t;
+  document.getElementById(`${round}-qv`).textContent=q;
+  document.getElementById(`${round}-rv`).textContent=r;
+  document.getElementById(`${round}-tb`).style.cssText=`width:${t/5*100}%;background:${barColor(t)}`;
+  document.getElementById(`${round}-qb`).style.cssText=`width:${q/5*100}%;background:${barColor(q)}`;
+  document.getElementById(`${round}-rb`).style.cssText=`width:${r/5*100}%;background:${barColor(r)}`;
+  const who=sel[`${round}-who`],issue=sel[`${round}-issue`];
+  document.getElementById(`${round}-who-display`).textContent=(who||issue)?`With ${who||'—'} · around ${issue||'—'}`:'Select a community and issue above to personalize your results';
+  const s=getStage(t+q+r);
+  document.getElementById(`${round}-stage`).textContent=s.stage;
+  document.getElementById(`${round}-type`).textContent=s.name;
+  document.getElementById(`${round}-present`).textContent=s.present;
+  document.getElementById(`${round}-needed`).textContent=s.needed;
+  document.getElementById(`${round}-ref`).textContent=s.ref;
+  document.getElementById(`${round}-result`).style.display='block';
+  updateComparison();updatePractices();
+}
+
+function updateComparison(){
+  const v=id=>+document.getElementById(id).value;
+  const r1t=v('r1-ts'),r1q=v('r1-qs'),r1r=v('r1-rs');
+  const r2t=v('r2-ts'),r2q=v('r2-qs'),r2r=v('r2-rs');
+  ['r1-t','r1-q','r1-r','r2-t','r2-q','r2-r'].forEach((id,i)=>{
+    const vals=[r1t,r1q,r1r,r2t,r2q,r2r];
+    document.getElementById(`cb-${id}`).style.width=(vals[i]/5*100)+'%';
+  });
+  if(sel['r1-who'])document.getElementById('comp-label-1').textContent=sel['r1-who'];
+  if(sel['r2-who'])document.getElementById('comp-label-2').textContent=sel['r2-who'];
+  const diff=Math.abs((r1t+r1q+r1r)-(r2t+r2q+r2r));
+  let insight;
+  if(diff>=7)insight="There is a significant gap between these two relationships. You are someone's depth and someone else's surface — possibly at the same time. This is not hypocrisy. It is the honest reality of solidarity. The question is: what are you willing to build in the thinner one, and under what conditions?";
+  else if(diff>=4)insight="There is a meaningful difference here. That gap is information — not judgment. It shows you where you have built something real and where you are still beginning. Both are true at the same time, and both deserve your attention.";
+  else insight="These two relationships score similarly. That might mean you are building consistently across contexts — or it might mean the honest reckoning has not fully happened in either one yet. What would it look like to push one of them meaningfully deeper?";
+  document.getElementById('comp-insight').textContent=insight;
+}
+
+function updatePractices(){
+  const vals=['r1-ts','r1-qs','r1-rs','r2-ts','r2-qs','r2-rs'].map(id=>+document.getElementById(id).value);
+  const avg=Math.round(vals.reduce((a,b)=>a+b,0)/6);
+  const p=avg<=2?practiceMap.low:avg<=3?practiceMap.mid:practiceMap.high;
+  document.getElementById('practices-list').innerHTML=p.map(t=>`<div class="practice"><div class="practice-dot"></div><div class="practice-text">${t}</div></div>`).join('');
+}
+
+update('r1');update('r2');
+</script>
+</body>
+</html>
